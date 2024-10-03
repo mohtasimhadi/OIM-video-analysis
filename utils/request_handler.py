@@ -18,7 +18,11 @@ def put_video(video_path):
     with open(video_path, 'rb') as video_file:
         file = {'file': video_file}
         response = requests.post(url, files=file)
-    return {
-        'status_code': response.status_code,
-        'text': response.text
-    }
+    return response
+
+def put_image(image_path):
+    url = Config.CDN_URI + Config.PUT_IMAGE
+    with open(image_path, 'rb') as video_file:
+        file = {'file': video_file}
+        response = requests.post(url, files=file)
+    return response
