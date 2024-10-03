@@ -2,3 +2,4 @@ env
 Videos
 results
 *.ipynb
+__pycache__
