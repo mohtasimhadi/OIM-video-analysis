@@ -12,7 +12,7 @@ def quality_assessment(mask):
     else:
         circularity = 0
 
-    if len(contour) >= 5:  # Minimum number of points required to fit an ellipse
+    if len(contour) >= 5:
         ellipse = cv2.fitEllipse(contour)
         (center, axes, orientation) = ellipse
         major_axis = max(axes)

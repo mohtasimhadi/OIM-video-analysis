@@ -17,7 +17,6 @@ async def video_processing(video_id: str):
 
     status = put_video(result['video_path'])
     if status.status_code == 200:
-        print(status.text)
         response['video_id'] = status.json()['unique_id']
         os.remove(video_path)
         os.remove('temp_result.mp4')

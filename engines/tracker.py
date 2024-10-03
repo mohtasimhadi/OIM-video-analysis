@@ -64,7 +64,7 @@ class YOLOTracker:
                 break
 
             frame_counter += 1
-            print(f"Processing frame {frame_counter}/{total_frames}")
+            print(f"Tracking frame: {frame_counter}/{total_frames}")
 
             annotator = self.process_frame(im0)
             if annotator:

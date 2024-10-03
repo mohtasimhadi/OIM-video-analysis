@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from ultralytics.utils.plotting import Annotator
+from engines.quality_checker import quality_assessment
 
 def initialize_video_capture(video_path, result_path):
     cap = cv2.VideoCapture(video_path)
@@ -21,10 +22,16 @@ def get_tracked_objects(track_history):
         annotator = Annotator(data_frame_contiguous, line_width=2)
         annotator.seg_bbox(mask=data['mask'], mask_color=(0, 255, 0))
 
+        quality_data = quality_assessment(data['mask'].tolist())
+
         tracked_data.append({
             "track_id": track_id,
             "confidence": data['confidence'],
             "image": annotator.result(),
+            'area': quality_data['area'],
+            'perimeter': quality_data['perimeter'],
+            'circularity': quality_data['circularity'],
+            'eccentricity': quality_data['eccentricity'],
             "mask": data['mask'].tolist()
         })
 
