@@ -11,7 +11,6 @@ class YOLOTracker:
         self.model = YOLO(model_path, verbose=False)
         self.video_path = video_path
         self.result_path = 'temp_result.mp4'
-        self.tracked_objects_path = ''
         self.track_history = {}
         self.color_map = {}
 
@@ -74,7 +73,7 @@ class YOLOTracker:
         out.release()
         cap.release()
         cv2.destroyAllWindows()
-        track_data = get_tracked_objects(self.track_history, self.tracked_objects_path)
+        track_data = get_tracked_objects(self.track_history)
         return {
             "video_path": self.result_path,
             "track_data": track_data

@@ -1,6 +1,4 @@
 import cv2
-import yaml
-import os
 import numpy as np
 from ultralytics.utils.plotting import Annotator
 
@@ -15,15 +13,13 @@ def write_annotated_video(annotator, out):
     if annotator:
         out.write(annotator.result())
 
-def get_tracked_objects(track_history, tracked_objects_path):
+def get_tracked_objects(track_history):
     tracked_data = []
     for track_id, data in track_history.items():
-        # mask_img_path = os.path.join(tracked_objects_path, f"track_{track_id}.png")
 
         data_frame_contiguous = np.ascontiguousarray(data['frame'])
         annotator = Annotator(data_frame_contiguous, line_width=2)
         annotator.seg_bbox(mask=data['mask'], mask_color=(0, 255, 0))
-        # cv2.imwrite(mask_img_path, annotator.result())
 
         tracked_data.append({
             "track_id": track_id,
