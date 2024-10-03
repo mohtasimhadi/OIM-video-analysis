@@ -3,3 +3,4 @@ Videos
 results
 *.ipynb
 __pycache__
+*.mp4
