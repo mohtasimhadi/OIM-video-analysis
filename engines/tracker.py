@@ -3,18 +3,17 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 from ultralytics.utils.plotting import Annotator
-from utils.video_utils import initialize_video_capture, write_annotated_video, save_tracked_objects
+from utils.video_utils import initialize_video_capture, write_annotated_video, get_tracked_objects
 import random
 
 class YOLOTracker:
     def __init__(self, model_path, video_path):
         self.model = YOLO(model_path, verbose=False)
         self.video_path = video_path
-        self.result_path = video_path.replace("Videos", "results")
-        self.tracked_objects_path = self.result_path.replace(".mp4", "")
+        self.result_path = 'temp_result.mp4'
+        self.tracked_objects_path = ''
         self.track_history = {}
-        self.color_map = {}  # Dictionary to store colors for each track_id
-        os.makedirs(self.tracked_objects_path, exist_ok=True)
+        self.color_map = {}
 
     def process_frame(self, im0):
         results = self.model.track(im0, persist=True, verbose=False)
@@ -52,7 +51,6 @@ class YOLOTracker:
         return annotator
 
     def get_color(self, track_id):
-        # If the track_id doesn't have a color assigned, generate a new one
         if track_id not in self.color_map:
             self.color_map[track_id] = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         return self.color_map[track_id]
@@ -73,10 +71,11 @@ class YOLOTracker:
             if annotator:
                 write_annotated_video(annotator, out)
 
-            if cv2.waitKey(1) & 0xFF == ord("q"):
-                break
-
         out.release()
         cap.release()
         cv2.destroyAllWindows()
-        save_tracked_objects(self.track_history, self.tracked_objects_path)
+        track_data = get_tracked_objects(self.track_history, self.tracked_objects_path)
+        return {
+            "video_path": self.result_path,
+            "track_data": track_data
+        }
