@@ -48,5 +48,5 @@ def get_local_ip():
 if __name__ == "__main__":
     import uvicorn
     local_ip = get_local_ip()
-    print(f"App is accessible at: http://{local_ip}:8000")
+    print(f"App is accessible at: http://{local_ip}:5000")
     uvicorn.run(app, host="0.0.0.0", port=8000)
