@@ -13,6 +13,8 @@ class YOLOTracker:
         self.result_path = 'temp_result.mp4'
         self.track_history = {}
         self.color_map = {}
+        self.class_names = self.model.names
+
 
     def process_frame(self, im0):
         results = self.model.track(im0, persist=True, verbose=False)
@@ -21,13 +23,14 @@ class YOLOTracker:
             masks = results[0].masks.xy
             track_ids = results[0].boxes.id.int().cuda().tolist()
             confidences = results[0].boxes.conf.cuda().tolist()
+            class_ids = results[0].boxes.cls.int().cuda().tolist()
 
-            self.update_track_history(im0, masks, track_ids, confidences)
+            self.update_track_history(im0, masks, track_ids, confidences, class_ids)
             return self.annotate_frame(im0, masks, track_ids)
         return None
 
-    def update_track_history(self, im0, masks, track_ids, confidences):
-        for mask, track_id, confidence in zip(masks, track_ids, confidences):
+    def update_track_history(self, im0, masks, track_ids, confidences, class_ids):
+        for mask, track_id, confidence, class_id in zip(masks, track_ids, confidences, class_ids):
             if track_id not in self.track_history or confidence > self.track_history[track_id]['confidence']:
                 x_min, y_min = mask.min(axis=0)
                 x_max, y_max = mask.max(axis=0)
@@ -36,11 +39,11 @@ class YOLOTracker:
 
                 cropped_frame = im0[y_min:y_max, x_min:x_max]
                 cropped_frame = np.ascontiguousarray(cropped_frame)
-
                 self.track_history[track_id] = {
                     "confidence": confidence,
                     "frame": cropped_frame,
-                    "mask": mask - [x_min, y_min]
+                    "mask": mask - [x_min, y_min],
+                    "class_name": self.class_names[class_id]
                 }
 
     def annotate_frame(self, im0, masks, track_ids):

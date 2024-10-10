@@ -21,9 +21,10 @@ async def video_processing(video_id: str):
         os.remove(video_path)
         os.remove('temp_result.mp4')
 
-    for data in result['track_data']:
+    for i, data in enumerate(result['track_data']):
         temp_image_path = 'temp.jpg'
         cv2.imwrite(temp_image_path, data['image'])
+        print(f"Saving plant {i+1}/{len(result['track_data'])} info")
         status = put_image(temp_image_path)
         if status.status_code == 200:
             data['image'] = status.json()['image_id']

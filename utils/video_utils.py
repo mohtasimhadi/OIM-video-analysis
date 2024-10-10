@@ -32,7 +32,7 @@ def get_tracked_objects(track_history):
             'perimeter': quality_data['perimeter'],
             'circularity': quality_data['circularity'],
             'eccentricity': quality_data['eccentricity'],
-            "mask": data['mask'].tolist()
+            'class_name': data['class_name']
         })
 
     return tracked_data

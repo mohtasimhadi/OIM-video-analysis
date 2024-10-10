@@ -15,6 +15,7 @@ def get_video(video_id):
 
 def put_video(video_path):
     url = Config.CDN_URI + Config.PUT_VIDEO
+    print("Saving annotated video!")
     with open(video_path, 'rb') as video_file:
         file = {'file': video_file}
         response = requests.post(url, files=file)
