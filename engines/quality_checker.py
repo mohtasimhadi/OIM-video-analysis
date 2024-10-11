@@ -22,8 +22,8 @@ def quality_assessment(mask):
         eccentricity = 0
 
     return {
-        'area': float(area),
-        'perimeter': float(perimeter),
-        'circularity': float(circularity),
-        'eccentricity': float(eccentricity)
+        'area': round(float(area), 2),
+        'perimeter': round(float(perimeter), 2),
+        'circularity': round(float(circularity), 2),
+        'eccentricity': round(float(eccentricity), 2)
     }
