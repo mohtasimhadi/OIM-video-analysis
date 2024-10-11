@@ -26,12 +26,12 @@ def get_tracked_objects(track_history):
 
         tracked_data.append({
             "track_id": track_id,
-            "confidence": data['confidence'],
+            "confidence": round(data['confidence'], 2),
             "image": annotator.result(),
-            'area': quality_data['area'],
-            'perimeter': quality_data['perimeter'],
-            'circularity': quality_data['circularity'],
-            'eccentricity': quality_data['eccentricity'],
+            'area': round(quality_data['area'], 2),
+            'perimeter': round(quality_data['perimeter'], 2),
+            'circularity': round(quality_data['circularity'], 2),
+            'eccentricity': round(quality_data['eccentricity'], 2),
             'class_name': data['class_name']
         })
 
