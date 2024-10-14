@@ -4,6 +4,7 @@ from ultralytics.utils.plotting import Annotator
 from engines.quality_checker import quality_assessment
 
 def initialize_video_capture(video_path, result_path):
+    print('..................................................')
     cap = cv2.VideoCapture(video_path)
     w, h, fps = (int(cap.get(x)) for x in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS))
     out = cv2.VideoWriter(result_path, cv2.VideoWriter_fourcc(*"X264"), fps, (w, h))
